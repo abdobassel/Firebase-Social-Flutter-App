@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "222519781384",
+    "project_id": "udemycoursefirebase-fe71d",
+    "storage_bucket": "udemycoursefirebase-fe71d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222519781384:android:ecfa67732b3130211d89bd",
+        "android_client_info": {
+          "package_name": "com.bassel.social_firebase_course"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUg7d1d-zkO8RT-Paz2zqRKmN1PXs_7mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
