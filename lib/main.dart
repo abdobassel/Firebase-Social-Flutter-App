@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:social_firebase_course/blocSocial/SocialCubit.dart';
+import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/cache_helper/cache_helper.dart';
+import 'package:social_firebase_course/constants.dart';
 import 'package:social_firebase_course/firebase_options.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +20,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await cacheHelper.init();
   Widget widget;
-  var uId = cacheHelper.getData(key: 'uId');
+  uId = cacheHelper.getData(key: 'uId');
   if (uId != null) {
     widget = const SocialLayout();
   } else {
@@ -35,6 +38,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
+        BlocProvider(
+            create: (context) => SocialCubit(SocialinitState())..getUserData()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

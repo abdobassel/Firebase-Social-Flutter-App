@@ -44,8 +44,13 @@ class RegisterCubit extends Cubit<RegisterStates> {
       required String uId,
       required String phone,
       required String name}) async {
-    UserModel model =
-        UserModel(email: email, phone: phone, name: name, uId: uId);
+    UserModel model = UserModel(
+      email: email,
+      phone: phone,
+      name: name,
+      uId: uId,
+      isEmailVer: false,
+    );
     emit(CreateUserLoadingState());
     await FirebaseFirestore.instance
         .collection('users')
