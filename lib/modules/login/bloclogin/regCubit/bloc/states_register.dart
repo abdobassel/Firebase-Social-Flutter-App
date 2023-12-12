@@ -21,7 +21,11 @@ class RegisterChangPasswordShowState extends RegisterStates {}
 
 class CreateUserLoadingState extends RegisterStates {}
 
-class CreateUserSuccessState extends RegisterStates {}
+class CreateUserSuccessState extends RegisterStates {
+  final String? uId;
+
+  CreateUserSuccessState({this.uId});
+}
 
 class CreateUserErrorState extends RegisterStates {
   final String error;

@@ -10,9 +10,14 @@ class SocialCubit extends Cubit<SocialStates> {
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? model;
 
-  void getUserData() {
+  void getUserData() async {
     emit(SocialGetUserLoadingState());
-    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .get()
+        .then((value) {
+      model = UserModel.fromJson(value.data()!);
       emit(SocialGetUserSuccesState());
       print(value.data());
     }).catchError((error) {

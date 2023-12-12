@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_firebase_course/cache_helper/cache_helper.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/constants.dart';
+
 import 'package:social_firebase_course/layout/social_layout.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/cubit_register.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/states_register.dart';
@@ -28,11 +31,14 @@ class _RegisterState extends State<Register> {
     return BlocConsumer<RegisterCubit, RegisterStates>(
       listener: (context, state) {
         if (state is CreateUserSuccessState) {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return const SocialLayout();
-            //return Register();
-          }), (route) => false);
+          cacheHelper.saveData(key: 'uId', value: state.uId)!.then((value) {
+            ShowToast(text: ' تم التسجيل', state: ToastStates.SUCCESS);
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
+              return const SocialLayout();
+              //return Register();
+            }), (route) => false);
+          });
         } else if (state is RegisterErrorState) {
           ShowToast(
               text: "عفوا هناك خطأ في البيانات", state: ToastStates.ERROR);
