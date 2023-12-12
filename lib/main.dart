@@ -4,6 +4,8 @@ import 'package:social_firebase_course/firebase_options.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_firebase_course/bloc_observer.dart';
+import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/cubit_register.dart';
+import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/states_register.dart';
 import 'package:social_firebase_course/modules/login/loginscreen.dart';
 import 'package:social_firebase_course/shared/themes.dart';
 
@@ -20,10 +22,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
-      theme: lightTheme,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+        theme: lightTheme,
+      ),
     );
   }
 }
