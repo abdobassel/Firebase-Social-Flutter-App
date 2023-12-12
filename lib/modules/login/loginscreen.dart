@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/layout/social_layout.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginCubit.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginStates.dart';
 import 'package:social_firebase_course/modules/login/register.dart';
@@ -24,9 +25,15 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginErrorState) {
             print(state.error);
             ShowToast(text: state.error.toString(), state: ToastStates.ERROR);
+          } else if (state is LoginSuccesState) {
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
+              return const SocialLayout();
+              //return Register();
+            }), (route) => false);
           }
         },
-        builder: (context, LoginStates state) {
+        builder: (context, state) {
           var cubit = LoginCubit.get(context);
           return Scaffold(
             appBar: AppBar(),
@@ -104,7 +111,8 @@ class LoginScreen extends StatelessWidget {
                       Center(
                         child: Conditional.single(
                           context: context,
-                          conditionBuilder: (context) => true,
+                          conditionBuilder: (context) =>
+                              state is! LoginLoadingState,
                           widgetBuilder: (context) => DefaultButton(
                             function: () {
                               if (formKey.currentState!.validate()) {
