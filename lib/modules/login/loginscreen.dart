@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:social_firebase_course/cache_helper/cache_helper.dart';
 import 'package:social_firebase_course/components.dart';
 import 'package:social_firebase_course/layout/social_layout.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginCubit.dart';
@@ -26,11 +27,26 @@ class LoginScreen extends StatelessWidget {
             print(state.error);
             ShowToast(text: state.error.toString(), state: ToastStates.ERROR);
           } else if (state is LoginSuccesState) {
+            cacheHelper.saveData(key: 'uId', value: state.uId)!.then((value) {
+              ShowToast(
+                  text: 'تم تسجيل الدخول بنجاح مبروك',
+                  state: ToastStates.SUCCESS);
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) {
+                return const SocialLayout();
+                //return Register();
+              }), (route) => false);
+            });
+            /*
+            ShowToast(
+                text: 'تم تسجيل الدخول بنجاح مبروك',
+                state: ToastStates.SUCCESS);
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return const SocialLayout();
               //return Register();
             }), (route) => false);
+            */
           }
         },
         builder: (context, state) {

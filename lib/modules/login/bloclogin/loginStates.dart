@@ -7,7 +7,12 @@ class LoginitState extends LoginStates {}
 class LoginSuccesState extends LoginStates {
   final ShopLoginModel? shopLoginModel;
 
-  LoginSuccesState({this.shopLoginModel});
+  final String? uId;
+
+  LoginSuccesState({
+    this.shopLoginModel,
+    this.uId,
+  });
 }
 
 class LoginLoadingState extends LoginStates {}

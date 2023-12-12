@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_firebase_course/apiDio/apidio.dart';
-import 'package:social_firebase_course/models/login_model.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginStates.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -30,7 +28,7 @@ class LoginCubit extends Cubit<LoginStates> {
       // object to access data
       //    print(shopLoginModel?.data?.token.toString());
 
-      emit(LoginSuccesState());
+      emit(LoginSuccesState(uId: value.user!.uid));
     }).catchError((error) {
       print(error.toString());
       emit(LoginErrorState(error.toString()));
