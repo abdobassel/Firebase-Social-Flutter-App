@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData lightTheme = ThemeData(
+  primaryColor: Colors.green,
   primarySwatch: Colors.blue,
   fontFamily: 'cairo',
   useMaterial3: true,
@@ -23,6 +24,10 @@ ThemeData lightTheme = ThemeData(
           statusBarColor: Colors.white),
       backgroundColor: Colors.white),
   textTheme: TextTheme(
+    titleMedium: TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 18,
+    ),
     bodyMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
@@ -38,6 +43,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  primaryColor: Colors.green,
   scaffoldBackgroundColor: Color(0xff313737),
   useMaterial3: true,
   appBarTheme: AppBarTheme(
@@ -52,6 +58,11 @@ ThemeData darkTheme = ThemeData(
           statusBarColor: Color(0xff313737)),
       backgroundColor: Color(0xff313737)),
   textTheme: TextTheme(
+    titleMedium: TextStyle(
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+      fontSize: 18,
+    ),
     bodyMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
@@ -61,7 +72,7 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Color(0xff313737),
     unselectedItemColor: Colors.grey,
-    selectedItemColor: Colors.deepOrange,
+    selectedItemColor: Colors.white,
     type: BottomNavigationBarType.fixed,
     elevation: 0.0,
   ),
