@@ -26,7 +26,8 @@ ThemeData lightTheme = ThemeData(
   textTheme: TextTheme(
     titleMedium: TextStyle(
       fontWeight: FontWeight.w600,
-      fontSize: 18,
+      fontSize: 16,
+      height: 1.3,
     ),
     bodyMedium: TextStyle(
       fontSize: 18,
@@ -61,7 +62,8 @@ ThemeData darkTheme = ThemeData(
     titleMedium: TextStyle(
       fontWeight: FontWeight.w600,
       color: Colors.white,
-      fontSize: 18,
+      fontSize: 16,
+      height: 1.3,
     ),
     bodyMedium: TextStyle(
       fontSize: 18,
