@@ -33,7 +33,10 @@ class UserModel {
       'phone': phone,
       'uId': uId,
       'name': name,
-      'isEmailVer': isEmailVer
+      'isEmailVer': isEmailVer,
+      'image': image,
+      'cover': cover,
+      'bio': bio
     };
   }
 }

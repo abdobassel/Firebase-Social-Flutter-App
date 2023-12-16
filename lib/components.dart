@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 
 Widget DefaultButton({
@@ -161,3 +162,19 @@ Color chooseColorToast(ToastStates state) {
   }
   return color;
 }
+
+PreferredSizeWidget? DefaultAppBarSocial({
+  required BuildContext context,
+  List<Widget>? actions,
+  String? title,
+}) =>
+    AppBar(
+      actions: actions,
+      title: Text('$title'),
+      leading: IconButton(
+        icon: FaIcon(FontAwesomeIcons.arrowLeft),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );

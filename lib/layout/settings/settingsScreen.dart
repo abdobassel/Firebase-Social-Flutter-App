@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/modules/editprofile/editprofilescreen.dart';
+import 'package:social_firebase_course/modules/newpost/new_postScreen.dart';
 
 // ignore: camel_case_types
 class Settings_Screnn extends StatelessWidget {
@@ -19,17 +22,17 @@ class Settings_Screnn extends StatelessWidget {
           var model = SocialCubit.get(context).model;
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Container(
-                    height: 180,
+                    height: 200,
                     child: Stack(alignment: Alignment.bottomCenter, children: [
                       Align(
                           alignment: Alignment.topCenter,
                           child: Container(
                             width: double.infinity,
-                            height: 140,
+                            height: 170,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               image: DecorationImage(
@@ -40,6 +43,8 @@ class Settings_Screnn extends StatelessWidget {
                           )),
                       CircleAvatar(
                         radius: 61,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
                         child: CircleAvatar(
                           radius: 59,
                           backgroundImage: NetworkImage('${model?.image}'),
@@ -80,9 +85,9 @@ class Settings_Screnn extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              Text('Comments'),
+                              Text('Friends'),
                               Text(
-                                '200',
+                                '260',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
@@ -132,7 +137,27 @@ class Settings_Screnn extends StatelessWidget {
                     children: [
                       Expanded(
                           child: DefaultButton(
-                              text: "Edit Profile", function: () {}))
+                              text: "Add Post",
+                              function: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return NewPostScreen();
+                                }));
+                              })),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return EditProfileScreen();
+                            }));
+                          },
+                          child: FaIcon(
+                            FontAwesomeIcons.edit,
+                            size: 20,
+                          ))
                     ],
                   )
                 ],
