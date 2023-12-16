@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_firebase_course/blocSocial/SocialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/constants.dart';
@@ -11,10 +12,16 @@ class SocialLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        /* if (state is SocialNewPostState) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return NewPostScreen();
+          }));
+        }*/
+      },
       builder: (context, state) {
-        var model = SocialCubit.get(context).model;
         var cubit = SocialCubit.get(context);
+
         return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
                 onTap: (index) {
@@ -23,16 +30,18 @@ class SocialLayout extends StatelessWidget {
                 currentIndex: cubit.currentIndex,
                 items: [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: 'Home'),
+                      icon: FaIcon(FontAwesomeIcons.home), label: 'Home'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.chat), label: 'Chats'),
+                      icon: FaIcon(FontAwesomeIcons.message), label: 'Chats'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.person_2), label: 'Users'),
+                      icon: FaIcon(FontAwesomeIcons.pen), label: 'Post'),
+                  BottomNavigationBarItem(
+                      icon: FaIcon(FontAwesomeIcons.user), label: 'Users'),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.settings), label: 'Settings'),
                 ]),
             appBar: AppBar(
-              title: Text('${cubit.titles[cubit.currentIndex]}'),
+              title: Text(cubit.titles[cubit.currentIndex]),
               actions: [
                 IconButton(onPressed: () {}, icon: Icon(Icons.search)),
                 IconButton(
@@ -47,7 +56,7 @@ class SocialLayout extends StatelessWidget {
             ),
             body: Conditional.single(
                 context: context,
-                conditionBuilder: (context) => model != null,
+                conditionBuilder: (context) => true,
                 widgetBuilder: (context) => cubit.screens[cubit.currentIndex],
                 fallbackBuilder: (context) =>
                     Center(child: CircularProgressIndicator())));

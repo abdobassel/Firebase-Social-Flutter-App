@@ -4,19 +4,27 @@ class UserModel {
   String? uId;
   String? email;
   bool? isEmailVer;
-  UserModel({
-    this.email,
-    this.name,
-    this.phone,
-    this.uId,
-    this.isEmailVer,
-  });
+  String? image;
+  String? cover;
+  String? bio;
+  UserModel(
+      {this.email,
+      this.name,
+      this.phone,
+      this.uId,
+      this.isEmailVer,
+      this.cover,
+      this.bio,
+      this.image});
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     name = json['name'];
     phone = json['phone'];
     uId = json['uId'];
     isEmailVer = json['isEmailVer'];
+    image = json['image'];
+    cover = json['cover'];
+    bio = json['bio'];
   }
 
   Map<String, dynamic> toMap() {

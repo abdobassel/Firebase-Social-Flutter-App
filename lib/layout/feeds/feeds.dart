@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_firebase_course/blocSocial/socialCubit.dart';
-import 'package:social_firebase_course/blocSocial/socialStates.dart';
 
 class FeedsScrenn extends StatelessWidget {
   FeedsScrenn({super.key});
@@ -11,6 +8,7 @@ class FeedsScrenn extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             Card(
@@ -19,7 +17,7 @@ class FeedsScrenn extends StatelessWidget {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Stack(alignment: Alignment.bottomRight, children: [
                 Image(
-                  image: NetworkImage(imglink2),
+                  image: NetworkImage(imgLink),
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: 200,
@@ -35,6 +33,14 @@ class FeedsScrenn extends StatelessWidget {
                 )
               ]),
             ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return BuildPostItem(context);
+              },
+              itemCount: 5,
+            )
           ],
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:social_firebase_course/appBloc/appcubit.dart';
+import 'package:social_firebase_course/appBloc/appstates.dart';
 import 'package:social_firebase_course/blocSocial/SocialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/cache_helper/cache_helper.dart';
@@ -9,6 +11,8 @@ import 'package:social_firebase_course/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_firebase_course/bloc_observer.dart';
 import 'package:social_firebase_course/layout/social_layout.dart';
+import 'package:social_firebase_course/modules/login/bloclogin/loginCubit.dart';
+import 'package:social_firebase_course/modules/login/bloclogin/loginStates.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/cubit_register.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/regCubit/bloc/states_register.dart';
 import 'package:social_firebase_course/modules/login/loginscreen.dart';
@@ -16,13 +20,14 @@ import 'package:social_firebase_course/shared/themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = MyBlocObserver();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Bloc.observer = MyBlocObserver();
   await cacheHelper.init();
   Widget widget;
   uId = cacheHelper.getData(key: 'uId');
   if (uId != null) {
-    widget = const SocialLayout();
+    widget = SocialLayout();
   } else {
     widget = LoginScreen();
   }
@@ -36,16 +41,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
-        BlocProvider(
-            create: (context) => SocialCubit(SocialinitState())..getUserData()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: startWidget,
-        theme: lightTheme,
-      ),
-    );
+        providers: [
+          BlocProvider(
+              create: (context) =>
+                  SocialCubit(SocialinitState())..getUserData()),
+          BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
+          BlocProvider(create: (context) => LoginCubit(LoginitState())),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: startWidget,
+          theme: lightTheme,
+        ));
   }
 }
+
+
+
+
+
+
+
+
+/*
+
+
+
+ */

@@ -38,18 +38,24 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   // createUserFireStore
+  UserModel? model;
 
   void createUser(
       {required String email,
       required String uId,
       required String phone,
       required String name}) async {
-    UserModel model = UserModel(
+    UserModel? model = UserModel(
       email: email,
       phone: phone,
       name: name,
       uId: uId,
       isEmailVer: false,
+      bio: 'Write Your bio here.....',
+      image:
+          'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66',
+      cover:
+          'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66',
     );
     emit(CreateUserLoadingState());
     await FirebaseFirestore.instance

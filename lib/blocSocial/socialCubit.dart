@@ -11,30 +11,32 @@ import 'package:social_firebase_course/layout/settings/settingsScreen.dart';
 import 'package:social_firebase_course/layout/users/usersScreen.dart';
 import 'package:social_firebase_course/models/createuser.dart';
 import "package:http/http.dart" as http;
+import 'package:social_firebase_course/modules/newpost/new_postScreen.dart';
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit(super.initialState);
 
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? model;
+
+  int currentIndex = 0;
   List<Widget> screens = [
     FeedsScrenn(),
     Chats_Screnn(),
+    NewPostScreen(),
     UsersScrenn(),
     Settings_Screnn(),
   ];
-  List<String> titles = [
-    'Feeds ',
-    'chats',
-    'users',
-    'Settings',
-  ];
 
-  int currentIndex = 0;
+  List<String> titles = ['Feeds ', 'chats', 'Add Post', 'users', 'Settings'];
 
   void changeBottomNav(int index) {
-    currentIndex = index;
-    emit(SocialChangeBottomNavState());
+    if (index == 2) {
+      emit(SocialNewPostState());
+    } else {
+      currentIndex = index;
+      emit(SocialChangeBottomNavState());
+    }
   }
 
   void getUserData() async {

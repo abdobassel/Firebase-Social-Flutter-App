@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
             ShowToast(text: ' تم التسجيل', state: ToastStates.SUCCESS);
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-              return const SocialLayout();
+              return SocialLayout();
               //return Register();
             }), (route) => false);
           });
