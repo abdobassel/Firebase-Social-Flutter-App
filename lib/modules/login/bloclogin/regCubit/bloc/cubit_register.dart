@@ -38,14 +38,13 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   // createUserFireStore
-  UserModel? model;
 
   void createUser(
       {required String email,
       required String uId,
       required String phone,
       required String name}) async {
-    UserModel? model = UserModel(
+    UserModel model = UserModel(
       email: email,
       phone: phone,
       name: name,

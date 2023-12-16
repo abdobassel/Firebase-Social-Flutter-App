@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_firebase_course/appBloc/appcubit.dart';
 import 'package:social_firebase_course/appBloc/appstates.dart';
-import 'package:social_firebase_course/blocSocial/SocialCubit.dart';
+import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/cache_helper/cache_helper.dart';
 import 'package:social_firebase_course/constants.dart';
@@ -42,9 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-              create: (context) =>
-                  SocialCubit(SocialinitState())..getUserData()),
+          BlocProvider(create: (context) => SocialCubit(SocialinitState())),
           BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
           BlocProvider(create: (context) => LoginCubit(LoginitState())),
         ],

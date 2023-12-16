@@ -15,7 +15,8 @@ class Settings_Screnn extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
         listener: (context, state) {},
-        builder: (context, state) {
+        builder: (BuildContext context, state) {
+          var model = SocialCubit.get(context).model;
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(6.0),
@@ -25,19 +26,18 @@ class Settings_Screnn extends StatelessWidget {
                     height: 180,
                     child: Stack(alignment: Alignment.bottomCenter, children: [
                       Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          width: double.infinity,
-                          height: 140,
-                          decoration: BoxDecoration(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: double.infinity,
+                            height: 140,
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               image: DecorationImage(
-                                image: NetworkImage(
-                                    'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66'),
+                                image: NetworkImage('${model?.cover}'),
                                 fit: BoxFit.cover,
-                              )),
-                        ),
-                      ),
+                              ),
+                            ),
+                          )),
                       CircleAvatar(
                         radius: 61,
                         child: CircleAvatar(
@@ -51,7 +51,7 @@ class Settings_Screnn extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('sssssssssssssss'),
+                  Text('${model?.name}'),
                   Text(
                     'I Am Flutter Developer',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
