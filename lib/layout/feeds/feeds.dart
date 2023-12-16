@@ -1,53 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_firebase_course/blocSocial/socialCubit.dart';
+import 'package:social_firebase_course/blocSocial/socialStates.dart';
+import 'package:social_firebase_course/models/createuser.dart';
 
 class FeedsScrenn extends StatelessWidget {
   FeedsScrenn({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Card(
-              margin: EdgeInsets.all(8.0),
-              elevation: 10.0,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Stack(alignment: Alignment.bottomRight, children: [
-                Image(
-                  image: NetworkImage(imgLink),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 200,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    'Communicate With Friends',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.white,
+    return BlocConsumer<SocialCubit, SocialStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var model = SocialCubit.get(context).model;
+
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Card(
+                    margin: EdgeInsets.all(8.0),
+                    elevation: 10.0,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Stack(alignment: Alignment.bottomRight, children: [
+                      Image(
+                        image: NetworkImage(imgLink),
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 200,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Communicate With Friends',
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: Colors.white,
+                                  ),
                         ),
+                      )
+                    ]),
                   ),
-                )
-              ]),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return BuildPostItem(
+                          context, SocialCubit.get(context).model!);
+                    },
+                    itemCount: 5,
+                  )
+                ],
+              ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return BuildPostItem(context);
-              },
-              itemCount: 5,
-            )
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
-  Widget BuildPostItem(context) => Card(
+  Widget BuildPostItem(context, UserModel model) => Card(
         color: Colors.white,
         margin: EdgeInsets.all(8.0),
         elevation: 10.0,
@@ -58,7 +70,7 @@ class FeedsScrenn extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(img1),
+                  backgroundImage: NetworkImage('${model.image}'),
                 ),
                 SizedBox(
                   width: 15,
@@ -231,7 +243,7 @@ class FeedsScrenn extends StatelessWidget {
                       child: Row(children: [
                         CircleAvatar(
                           radius: 15,
-                          backgroundImage: NetworkImage(img1),
+                          backgroundImage: NetworkImage('${model.image}'),
                         ),
                         SizedBox(width: 10),
                         Text(

@@ -42,8 +42,7 @@ class Settings_Screnn extends StatelessWidget {
                         radius: 61,
                         child: CircleAvatar(
                           radius: 59,
-                          backgroundImage: NetworkImage(
-                              'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66'),
+                          backgroundImage: NetworkImage('${model?.image}'),
                         ),
                       ),
                     ]),
@@ -53,7 +52,7 @@ class Settings_Screnn extends StatelessWidget {
                   ),
                   Text('${model?.name}'),
                   Text(
-                    'I Am Flutter Developer',
+                    '${model?.bio}',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 14,
                         ),

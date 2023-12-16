@@ -52,7 +52,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       isEmailVer: false,
       bio: 'Write Your bio here.....',
       image:
-          'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66',
+          'https://avatars.githubusercontent.com/u/37000856?s=400&u=869f0cd5eb86ab59ffee2c53ef195a35826e7827&v=4',
       cover:
           'https://img.freepik.com/free-photo/triumphing-happy-guy-raises-clenched-fist-celebrates-winning-lottery-gets-message-confirming-holds-mobile-phone-browses-social-media-wears-yellow-hat-striped-jumper-always-stays-touch_273609-31312.jpg?w=996&t=st=1702504239~exp=1702504839~hmac=6874839c6adb6eb8ebd6bc4a9557968c850b02bc901934e7826e97b46251bb66',
     );
