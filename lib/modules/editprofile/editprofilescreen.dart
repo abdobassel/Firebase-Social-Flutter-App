@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/components.dart';
@@ -8,12 +11,17 @@ import 'package:social_firebase_course/components.dart';
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
+  var nameController = TextEditingController();
+  var phoneController = TextEditingController();
+  var bioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
         listener: (context, state) {},
         builder: (context, state) {
           var model = SocialCubit.get(context).model;
+          var profileImage = SocialCubit.get(context).profilImage;
           return Scaffold(
             appBar: DefaultAppBarSocial(
                 context: context,
@@ -71,7 +79,9 @@ class EditProfileScreen extends StatelessWidget {
                                 Theme.of(context).scaffoldBackgroundColor,
                             child: CircleAvatar(
                               radius: 59,
-                              backgroundImage: NetworkImage('${model?.image}'),
+                              backgroundImage: profileImage == null
+                                  ? NetworkImage('${model?.image}')
+                                  : FileImage(profileImage) as ImageProvider,
                             ),
                           ),
                           CircleAvatar(
@@ -79,12 +89,46 @@ class EditProfileScreen extends StatelessWidget {
                               backgroundColor: Theme.of(context).primaryColor,
                               child: IconButton(
                                 icon: FaIcon(FontAwesomeIcons.camera),
-                                onPressed: () {},
+                                onPressed: () {
+                                  SocialCubit.get(context).getImageprofile();
+                                },
                               )),
                         ],
                       ),
                     ]),
                   ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  DefaultTextForm(
+                      controller: nameController,
+                      labeltext: 'User Name',
+                      validate: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'Name Is Required';
+                          }
+                          return null;
+                        }
+                      },
+                      type: TextInputType.text,
+                      prefix: FontAwesomeIcons.user),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DefaultTextForm(
+                      controller: bioController,
+                      labeltext: 'Write Bio',
+                      validate: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'Bio Is Short';
+                          }
+                          return null;
+                        }
+                      },
+                      type: TextInputType.text,
+                      prefix: FontAwesomeIcons.infoCircle),
                 ],
               ),
             ),

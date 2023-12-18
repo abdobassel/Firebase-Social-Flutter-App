@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/constants.dart';
 import 'package:social_firebase_course/layout/chats/chatsScreen.dart';
@@ -53,6 +55,23 @@ class SocialCubit extends Cubit<SocialStates> {
       print(error.toString());
       emit(SocialGetUserErrorState(error.toString()));
     });
+  }
+
+  //images profile and cover picked
+  var picker = ImagePicker();
+
+  File? profilImage;
+  Future<void> getImageprofile() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      profilImage = File(pickedFile.path);
+      emit(SociaProfilePickedSuccessState());
+    } else {
+      print('no img selected');
+      emit(SociaProfilePickedErrorState());
+    }
   }
 
   // test django Api
