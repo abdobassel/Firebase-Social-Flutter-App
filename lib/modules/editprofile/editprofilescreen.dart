@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/models/createuser.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
@@ -22,15 +23,19 @@ class EditProfileScreen extends StatelessWidget {
         builder: (context, state) {
           var model = SocialCubit.get(context).model;
           var profileImage = SocialCubit.get(context).profilImage;
-          nameController.text = model!.name!;
-          bioController.text = model.bio!;
+
+          var coverImage = SocialCubit.get(context).coverImage;
+          nameController.text = model?.name ?? 'name';
+          bioController.text = model?.bio ?? 'name';
           return Scaffold(
             appBar: DefaultAppBarSocial(
                 context: context,
                 title: 'Edit Profile',
                 actions: [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        SocialCubit.get(context).uploadProfileImage();
+                      },
                       child: Text(
                         'Update',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -58,7 +63,10 @@ class EditProfileScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
                                   image: DecorationImage(
-                                    image: NetworkImage('${model?.cover}'),
+                                    image: coverImage == null
+                                        ? NetworkImage('${model?.cover}')
+                                        : FileImage(coverImage)
+                                            as ImageProvider,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -68,7 +76,9 @@ class EditProfileScreen extends StatelessWidget {
                                       Theme.of(context).scaffoldBackgroundColor,
                                   child: IconButton(
                                     icon: FaIcon(FontAwesomeIcons.camera),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      SocialCubit.get(context).getImageCover();
+                                    },
                                   )),
                             ],
                           )),

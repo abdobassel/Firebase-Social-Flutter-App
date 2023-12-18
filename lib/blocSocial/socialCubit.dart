@@ -14,6 +14,7 @@ import 'package:social_firebase_course/layout/users/usersScreen.dart';
 import 'package:social_firebase_course/models/createuser.dart';
 import "package:http/http.dart" as http;
 import 'package:social_firebase_course/modules/newpost/new_postScreen.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit(super.initialState);
@@ -72,6 +73,34 @@ class SocialCubit extends Cubit<SocialStates> {
       print('no img selected');
       emit(SociaProfilePickedErrorState());
     }
+  }
+
+//cover
+  File? coverImage;
+  Future<void> getImageCover() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      coverImage = File(pickedFile.path);
+      emit(SocialCoverPickedSuccsessState());
+    } else {
+      print('no img selected');
+      emit(SocialCoverPickedErrorState());
+    }
+  }
+
+  //upload firestorasge cover img prof
+  void uploadProfileImage() {
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(profilImage!.path).pathSegments.last}')
+        .putFile(profilImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+      }).catchError((erorr) {});
+    }).catchError((erorr) {});
   }
 
   // test django Api
