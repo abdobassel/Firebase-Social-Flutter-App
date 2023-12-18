@@ -22,6 +22,8 @@ class EditProfileScreen extends StatelessWidget {
         builder: (context, state) {
           var model = SocialCubit.get(context).model;
           var profileImage = SocialCubit.get(context).profilImage;
+          nameController.text = model!.name!;
+          bioController.text = model.bio!;
           return Scaffold(
             appBar: DefaultAppBarSocial(
                 context: context,
