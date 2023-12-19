@@ -91,6 +91,7 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   //upload firestorasge cover img prof
+  String profImgUrl = '';
   void uploadProfileImage() {
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -98,10 +99,79 @@ class SocialCubit extends Cubit<SocialStates> {
         .putFile(profilImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
+        emit(SocialUploadProfileImgSuccessState());
+        profImgUrl = value;
         print(value);
-      }).catchError((erorr) {});
-    }).catchError((erorr) {});
+      }).catchError((erorr) {
+        emit(SocialUploadProfileImgErorrState());
+      });
+    }).catchError((erorr) {
+      emit(SocialUploadProfileImgErorrState());
+    });
   }
+
+  // upload cover start
+  String coverUrl = '';
+  void uploadCover() {
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
+        .putFile(coverImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        emit(SocialUploadCoverSuccessState());
+        coverUrl = value;
+        print(value);
+      }).catchError((erorr) {
+        emit(SocialUploadCoverErrorState());
+      });
+    }).catchError((erorr) {
+      emit(SocialUploadCoverErrorState());
+    });
+  }
+
+  //update user
+  void updateUserimgs({
+    required String name,
+    required String bio,
+    required String phone,
+  }) {
+    emit(SocialUpdateUserLoadingState());
+    if (coverImage != null) {
+      uploadCover();
+    } else if (profilImage != null) {
+      uploadProfileImage();
+    } else if (coverImage != null && profilImage != null) {
+      uploadCover();
+      uploadProfileImage();
+    } else {
+      UserModel usermodel = UserModel(
+        name: name,
+        bio: bio,
+        email: model?.email,
+        uId: model?.uId,
+        phone: phone,
+        cover: model?.cover,
+        image: model?.image,
+        isEmailVer: false,
+      );
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .update(usermodel!.toMap())
+          .then((value) {
+        getUserData();
+      }).catchError((erorr) {
+        emit(SocialUpdateUserErrorState());
+      });
+    }
+  }
+
+  void updateUser({
+    required String name,
+    required String bio,
+    required String phone,
+  }) {}
 
   // test django Api
   void getdatatest() async {

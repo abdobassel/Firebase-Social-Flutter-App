@@ -26,7 +26,8 @@ class EditProfileScreen extends StatelessWidget {
 
           var coverImage = SocialCubit.get(context).coverImage;
           nameController.text = model?.name ?? 'name';
-          bioController.text = model?.bio ?? 'name';
+          bioController.text = model?.bio ?? 'bio.....';
+          phoneController.text = model?.phone ?? 'phone';
           return Scaffold(
             appBar: DefaultAppBarSocial(
                 context: context,
@@ -34,7 +35,10 @@ class EditProfileScreen extends StatelessWidget {
                 actions: [
                   TextButton(
                       onPressed: () {
-                        SocialCubit.get(context).uploadProfileImage();
+                        SocialCubit.get(context).updateUserimgs(
+                            name: nameController.text,
+                            bio: bioController.text,
+                            phone: phoneController.text);
                       },
                       child: Text(
                         'Update',
@@ -50,6 +54,12 @@ class EditProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(6.0),
               child: Column(
                 children: [
+                  if (state is SocialUpdateUserLoadingState)
+                    LinearProgressIndicator(),
+                  if (state is SocialUpdateUserLoadingState)
+                    SizedBox(
+                      height: 10,
+                    ),
                   Container(
                     height: 200,
                     child: Stack(alignment: Alignment.bottomCenter, children: [
@@ -141,6 +151,22 @@ class EditProfileScreen extends StatelessWidget {
                       },
                       type: TextInputType.text,
                       prefix: FontAwesomeIcons.infoCircle),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DefaultTextForm(
+                      controller: phoneController,
+                      labeltext: 'phone',
+                      validate: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'phone Is Required';
+                          }
+                          return null;
+                        }
+                      },
+                      type: TextInputType.phone,
+                      prefix: FontAwesomeIcons.phone),
                 ],
               ),
             ),

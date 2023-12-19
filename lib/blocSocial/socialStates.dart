@@ -23,7 +23,7 @@ class SocialCoverPickedSuccsessState extends SocialStates {}
 
 class SocialCoverPickedErrorState extends SocialStates {}
 
-class SocialUploadCoverSuccessErrorState extends SocialStates {}
+class SocialUploadCoverSuccessState extends SocialStates {}
 
 class SocialUploadCoverErrorState extends SocialStates {}
 
@@ -32,3 +32,5 @@ class SocialUploadProfileImgErorrState extends SocialStates {}
 class SocialUploadProfileImgSuccessState extends SocialStates {}
 
 class SocialUpdateUserErrorState extends SocialStates {}
+
+class SocialUpdateUserLoadingState extends SocialStates {}
