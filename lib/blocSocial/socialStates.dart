@@ -15,6 +15,7 @@ class SocialChangeBottomNavState extends SocialStates {}
 
 class SocialNewPostState extends SocialStates {}
 
+// cover and profile imgs => update  user data
 class SociaProfilePickedSuccessState extends SocialStates {}
 
 class SociaProfilePickedErrorState extends SocialStates {}
@@ -36,3 +37,17 @@ class SocialUpdateUserErrorState extends SocialStates {}
 class SocialUpdateUserLoadingState extends SocialStates {}
 
 class SocialUpdatesuccessState extends SocialStates {}
+
+// Post
+class SocialCreatePostSuccessState extends SocialStates {}
+
+class SocialCreatePostErrorState extends SocialStates {}
+
+class SocialCreatePostLoadingState extends SocialStates {}
+
+class SocialPostPickedSuccessState extends SocialStates {}
+
+class SocialPostImagePickedErrorState extends SocialStates {}
+
+// close img post => null
+class SocialPostImageCloseState extends SocialStates {}
