@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/cache_helper/cache_helper.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/constants.dart';
 import 'package:social_firebase_course/layout/social_layout.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginCubit.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginStates.dart';
@@ -29,6 +31,7 @@ class LoginScreen extends StatelessWidget {
             ShowToast(
                 text: 'تم تسجيل الدخول بنجاح مبروك',
                 state: ToastStates.SUCCESS);
+            SocialCubit.get(context).getUserData();
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return SocialLayout();

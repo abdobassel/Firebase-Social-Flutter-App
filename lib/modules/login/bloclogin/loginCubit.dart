@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_firebase_course/constants.dart';
 import 'package:social_firebase_course/modules/login/bloclogin/loginStates.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -25,6 +26,7 @@ class LoginCubit extends Cubit<LoginStates> {
         .then((value) {
       print(value.user?.email);
 
+      uId = value.user?.uid;
       // object to access data
       //    print(shopLoginModel?.data?.token.toString());
 

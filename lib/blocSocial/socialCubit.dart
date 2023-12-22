@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
+import 'package:social_firebase_course/cache_helper/cache_helper.dart';
 import 'package:social_firebase_course/constants.dart';
 import 'package:social_firebase_course/layout/chats/chatsScreen.dart';
 import 'package:social_firebase_course/layout/feeds/feeds.dart';
@@ -42,16 +43,14 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  void getUserData() async {
+  void getUserData() {
+    uId = cacheHelper.getData(key: 'uId');
+
     emit(SocialGetUserLoadingState());
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       model = UserModel.fromJson(value.data()!);
       emit(SocialGetUserSuccesState());
-      print(value.data());
+      //  print(value.data());
     }).catchError((error) {
       print(error.toString());
       emit(SocialGetUserErrorState(error.toString()));
@@ -91,46 +90,67 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   //upload firestorasge cover img prof
-  String profImgUrl = '';
-  void uploadProfileImage() {
+  // will delete string coverurl and imgurl
+  //and replace them by updateuser()
+  // String profImgUrl = '';
+  void uploadProfileImage({
+    required String name,
+    required String bio,
+    required String phone,
+  }) {
+    emit(SocialUpdateUserLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profilImage!.path).pathSegments.last}')
         .putFile(profilImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        emit(SocialUploadProfileImgSuccessState());
-        profImgUrl = value;
+        //
+        //  profImgUrl = value;
+        updateUser(name: name, bio: bio, phone: phone, image: value);
+        // emit(SocialUploadProfileImgSuccessState());
         print(value);
       }).catchError((erorr) {
+        print(erorr.toString());
         emit(SocialUploadProfileImgErorrState());
       });
     }).catchError((erorr) {
+      print(erorr.toString());
       emit(SocialUploadProfileImgErorrState());
     });
   }
 
   // upload cover start
-  String coverUrl = '';
-  void uploadCover() {
+  // String coverUrl = '';
+  void uploadCover({
+    required String name,
+    required String bio,
+    required String phone,
+  }) {
+    emit(SocialUpdateUserLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        emit(SocialUploadCoverSuccessState());
-        coverUrl = value;
-        print(value);
+        // emit(SocialUploadCoverSuccessState());
+        //  coverUrl = value;
+        updateUser(name: name, bio: bio, phone: phone, cover: value);
       }).catchError((erorr) {
+        print(erorr.toString());
         emit(SocialUploadCoverErrorState());
       });
     }).catchError((erorr) {
+      print(erorr.toString());
       emit(SocialUploadCoverErrorState());
     });
   }
 
   //update user
+  //هنحذف الميثود دي ونعدل على اللي تحتها
+  // لجعلهما دالة واحدة تحدذ البيانات كلها لتحديذ الصور ايضا
+  /*
   void updateUserimgs({
     required String name,
     required String bio,
@@ -145,33 +165,40 @@ class SocialCubit extends Cubit<SocialStates> {
       uploadCover();
       uploadProfileImage();
     } else {
-      UserModel usermodel = UserModel(
-        name: name,
-        bio: bio,
-        email: model?.email,
-        uId: model?.uId,
-        phone: phone,
-        cover: model?.cover,
-        image: model?.image,
-        isEmailVer: false,
-      );
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(uId)
-          .update(usermodel!.toMap())
-          .then((value) {
-        getUserData();
-      }).catchError((erorr) {
-        emit(SocialUpdateUserErrorState());
-      });
+      updateUser(name: name, bio: bio, phone: phone);
     }
-  }
+  }*/
 
   void updateUser({
     required String name,
     required String bio,
     required String phone,
-  }) {}
+    String? cover,
+    String? image,
+  }) {
+    UserModel updatedUser = UserModel(
+      name: name,
+      bio: bio,
+      email: model!.email,
+      uId: model!.uId,
+      phone: phone,
+      cover: cover ?? model!.cover,
+      image: image ?? model!.image,
+      isEmailVer: false,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .update(updatedUser.toMap())
+        .then((value) {
+      getUserData();
+
+      // emit(SocialUpdatesuccessState());
+    }).catchError((erorr) {
+      print(erorr.toString());
+      emit(SocialUpdateUserErrorState());
+    });
+  }
 
   // test django Api
   void getdatatest() async {

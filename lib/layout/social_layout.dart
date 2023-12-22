@@ -12,61 +12,57 @@ class SocialLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) =>
-          SocialCubit(SocialinitState())..getUserData(),
-      child: BlocConsumer<SocialCubit, SocialStates>(
-        listener: (context, state) {
-          if (state is SocialNewPostState) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return NewPostScreen();
-            }));
-          }
-        },
-        builder: (context, state) {
-          var cubit = SocialCubit.get(context);
-          var model = SocialCubit.get(context).model;
+    return BlocConsumer<SocialCubit, SocialStates>(
+      listener: (context, state) {
+        if (state is SocialNewPostState) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return NewPostScreen();
+          }));
+        }
+      },
+      builder: (context, state) {
+        var cubit = SocialCubit.get(context);
+        var model = SocialCubit.get(context).model;
 
-          return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                  onTap: (index) {
-                    cubit.changeBottomNav(index);
-                  },
-                  currentIndex: cubit.currentIndex,
-                  items: [
-                    BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.home), label: 'Home'),
-                    BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.message), label: 'Chats'),
-                    BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.pen), label: 'Post'),
-                    BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.user), label: 'Users'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.settings), label: 'Settings'),
-                  ]),
-              appBar: AppBar(
-                title: Text(cubit.titles[cubit.currentIndex]),
-                actions: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.notifications_active_outlined)),
-                  TextButton(
-                      onPressed: () {
-                        signOut(context);
-                      },
-                      child: Text('Logout'))
-                ],
-              ),
-              body: Conditional.single(
-                  context: context,
-                  conditionBuilder: (context) => model != null,
-                  widgetBuilder: (context) => cubit.screens[cubit.currentIndex],
-                  fallbackBuilder: (context) =>
-                      Center(child: CircularProgressIndicator())));
-        },
-      ),
+        return Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+                onTap: (index) {
+                  cubit.changeBottomNav(index);
+                },
+                currentIndex: cubit.currentIndex,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: FaIcon(FontAwesomeIcons.home), label: 'Home'),
+                  BottomNavigationBarItem(
+                      icon: FaIcon(FontAwesomeIcons.message), label: 'Chats'),
+                  BottomNavigationBarItem(
+                      icon: FaIcon(FontAwesomeIcons.pen), label: 'Post'),
+                  BottomNavigationBarItem(
+                      icon: FaIcon(FontAwesomeIcons.user), label: 'Users'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.settings), label: 'Settings'),
+                ]),
+            appBar: AppBar(
+              title: Text(cubit.titles[cubit.currentIndex]),
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.notifications_active_outlined)),
+                TextButton(
+                    onPressed: () {
+                      signOut(context);
+                    },
+                    child: Text('Logout'))
+              ],
+            ),
+            body: Conditional.single(
+                context: context,
+                conditionBuilder: (context) => model != null,
+                widgetBuilder: (context) => cubit.screens[cubit.currentIndex],
+                fallbackBuilder: (context) =>
+                    Center(child: CircularProgressIndicator())));
+      },
     );
   }
 }

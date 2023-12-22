@@ -34,3 +34,5 @@ class SocialUploadProfileImgSuccessState extends SocialStates {}
 class SocialUpdateUserErrorState extends SocialStates {}
 
 class SocialUpdateUserLoadingState extends SocialStates {}
+
+class SocialUpdatesuccessState extends SocialStates {}
