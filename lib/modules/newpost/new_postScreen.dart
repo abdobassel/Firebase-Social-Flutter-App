@@ -20,14 +20,14 @@ class NewPostScreen extends StatelessWidget {
               actions: [
                 TextButton(
                     onPressed: () {
+                      var now = DateTime.now();
+                      print(now.toString());
                       if (SocialCubit.get(context).postImage == null) {
                         SocialCubit.get(context).createPost(
-                            dateTime: DateTime.now.toString(),
-                            txt: txtController.text);
+                            dateTime: now.toString(), txt: txtController.text);
                       } else {
                         SocialCubit.get(context).createPostImage(
-                            dateTime: DateTime.now.toString(),
-                            txt: txtController.text);
+                            dateTime: now.toString(), txt: txtController.text);
                       }
                     },
                     child: Text(

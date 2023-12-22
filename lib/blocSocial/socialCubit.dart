@@ -257,8 +257,7 @@ class SocialCubit extends Cubit<SocialStates> {
     );
     FirebaseFirestore.instance
         .collection('posts')
-        .doc('1')
-        .set(postModel.toMap())
+        .add(postModel.toMap())
         .then((value) {
       emit(SocialCreatePostSuccessState());
     }).catchError((erorr) {
