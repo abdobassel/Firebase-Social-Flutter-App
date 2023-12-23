@@ -58,7 +58,8 @@ class FeedsScrenn extends StatelessWidget {
                         return BuildPostItem(
                             context,
                             SocialCubit.get(context).model!,
-                            SocialCubit.get(context).posts[index]);
+                            SocialCubit.get(context).posts[index],
+                            index);
                       },
                       itemCount: SocialCubit.get(context).posts.length,
                     )
@@ -70,7 +71,8 @@ class FeedsScrenn extends StatelessWidget {
         });
   }
 
-  Widget BuildPostItem(context, UserModel model, PostModel postModel) => Card(
+  Widget BuildPostItem(context, UserModel model, PostModel postModel, index) =>
+      Card(
         color: Colors.white,
         margin: EdgeInsets.all(8.0),
         elevation: 10.0,
@@ -274,7 +276,10 @@ class FeedsScrenn extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      SocialCubit.get(context)
+                          .likePosts(SocialCubit.get(context).postId[index]);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
