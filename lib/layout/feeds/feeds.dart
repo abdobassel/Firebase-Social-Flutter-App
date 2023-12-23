@@ -211,7 +211,7 @@ class FeedsScrenn extends StatelessWidget {
                             width: 6.0,
                           ),
                           Text(
-                            '0',
+                            '${SocialCubit.get(context).likes[index]}',
                             style: Theme.of(context).textTheme.bodySmall,
                           )
                         ],
@@ -237,7 +237,7 @@ class FeedsScrenn extends StatelessWidget {
                             width: 6.0,
                           ),
                           Text(
-                            '0',
+                            '${SocialCubit.get(context).commentsNum[index]}',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -269,9 +269,13 @@ class FeedsScrenn extends StatelessWidget {
                           child: TextFormField(
                             controller: commentController,
                             onFieldSubmitted: (data) {
+                              var now = DateTime.now().toString();
                               data = commentController.text;
-                              SocialCubit.get(context).commentPost(
-                                  SocialCubit.get(context).postId[index], data);
+                              SocialCubit.get(context).createComment(
+                                  postId:
+                                      SocialCubit.get(context).postId[index],
+                                  textComment: data,
+                                  commentDate: now);
                               commentController.clear();
                             },
                             // maxLines: null,
