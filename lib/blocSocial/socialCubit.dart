@@ -303,6 +303,23 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialLikePostErrorState());
     });
   }
+
+  // comments
+  void commentPost(String postId, String textComment) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .doc(uId)
+        .set({
+      'comment': textComment,
+    }).then((value) {
+      emit(SocialCommentPostSuccessState());
+    }).catchError((error) {
+      emit(SocialCommentPostErrorState());
+    });
+  }
+
 //////////////////////////////////////////////////////////////////////////////////
 
   // test django Api

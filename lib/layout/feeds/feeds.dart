@@ -8,7 +8,7 @@ import 'package:social_firebase_course/models/post_model.dart';
 
 class FeedsScrenn extends StatelessWidget {
   FeedsScrenn({super.key});
-
+  var commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
@@ -265,12 +265,25 @@ class FeedsScrenn extends StatelessWidget {
                           backgroundImage: NetworkImage('${model.image}'),
                         ),
                         SizedBox(width: 10),
-                        Text(
-                          'Write A Comment.....',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 15, color: Colors.grey[250]),
+                        Expanded(
+                          child: TextFormField(
+                            controller: commentController,
+                            onFieldSubmitted: (data) {
+                              data = commentController.text;
+                              SocialCubit.get(context).commentPost(
+                                  SocialCubit.get(context).postId[index], data);
+                              commentController.clear();
+                            },
+                            // maxLines: null,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Write a Comment...',
+                              hintStyle: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[250],
+                              ),
+                            ),
+                          ),
                         ),
                       ]),
                     ),

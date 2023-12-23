@@ -66,3 +66,8 @@ class SocialGetPostsErrorState extends SocialStates {
   final String error;
   SocialGetPostsErrorState(this.error);
 }
+
+// comments
+class SocialCommentPostSuccessState extends SocialStates {}
+
+class SocialCommentPostErrorState extends SocialStates {}
