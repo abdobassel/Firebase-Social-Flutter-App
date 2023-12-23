@@ -21,13 +21,16 @@ class NewPostScreen extends StatelessWidget {
                 TextButton(
                     onPressed: () {
                       var now = DateTime.now();
-                      print(now.toString());
+
                       if (SocialCubit.get(context).postImage == null) {
                         SocialCubit.get(context).createPost(
                             dateTime: now.toString(), txt: txtController.text);
+                        txtController.clear();
                       } else {
                         SocialCubit.get(context).createPostImage(
                             dateTime: now.toString(), txt: txtController.text);
+                        SocialCubit.get(context).closeImgPost();
+                        txtController.clear();
                       }
                     },
                     child: Text(
@@ -67,6 +70,7 @@ class NewPostScreen extends StatelessWidget {
               ]),
               Expanded(
                 child: TextFormField(
+                  maxLines: null,
                   controller: txtController,
                   decoration: InputDecoration(
                     hintText: 'What is on your mind bro....',

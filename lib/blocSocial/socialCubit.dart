@@ -270,6 +270,39 @@ class SocialCubit extends Cubit<SocialStates> {
     postImage = null;
     emit(SocialPostImageCloseState());
   }
+
+//get posts
+  List<PostModel> posts = [];
+  List<String> postId = [];
+  void getPosts() {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        // post id => likes
+        postId.add(element.id);
+
+        posts.add(PostModel.fromJson(element.data()));
+      });
+      emit(SocialGetPostsSuccesState());
+    }).catchError((error) {
+      emit(SocialGetPostsErrorState(error.toString()));
+    });
+  }
+
+  // likesPost
+  void likePosts({required String postId}) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(uId)
+        .set({
+      'like': true,
+    }).then((value) {
+      emit(SocialLikePostSuccessState());
+    }).catchError((error) {
+      emit(SocialLikePostErrorState());
+    });
+  }
 //////////////////////////////////////////////////////////////////////////////////
 
   // test django Api

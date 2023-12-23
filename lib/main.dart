@@ -43,8 +43,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) =>
-                  SocialCubit(SocialinitState())..getUserData()),
+              create: (context) => SocialCubit(SocialinitState())
+                ..getUserData()
+                ..getPosts()),
           BlocProvider(create: (context) => RegisterCubit(RegisteritState())),
           BlocProvider(create: (context) => LoginCubit(LoginitState())),
         ],

@@ -51,3 +51,18 @@ class SocialPostImagePickedErrorState extends SocialStates {}
 
 // close img post => null
 class SocialPostImageCloseState extends SocialStates {}
+
+//likes
+class SocialLikePostSuccessState extends SocialStates {}
+
+class SocialLikePostErrorState extends SocialStates {}
+
+//get posts
+class SocialGetPostsSuccesState extends SocialStates {}
+
+class SocialGetPostsLoadingState extends SocialStates {}
+
+class SocialGetPostsErrorState extends SocialStates {
+  final String error;
+  SocialGetPostsErrorState(this.error);
+}

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/models/createuser.dart';
+import 'package:social_firebase_course/models/post_model.dart';
 
 class FeedsScrenn extends StatelessWidget {
   FeedsScrenn({super.key});
@@ -12,59 +14,69 @@ class FeedsScrenn extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          var model = SocialCubit.get(context).model;
-
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Card(
-                    margin: EdgeInsets.all(8.0),
-                    elevation: 10.0,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Stack(alignment: Alignment.bottomRight, children: [
-                      Image(
-                        image: NetworkImage(imgLink),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Communicate With Friends',
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: Colors.white,
-                                  ),
+            child: Conditional.single(
+              context: context,
+              fallbackBuilder: (context) =>
+                  Center(child: CircularProgressIndicator()),
+              conditionBuilder: (context) =>
+                  SocialCubit.get(context).posts.isNotEmpty,
+              widgetBuilder: (context) => SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Card(
+                      margin: EdgeInsets.all(8.0),
+                      elevation: 10.0,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Stack(alignment: Alignment.bottomRight, children: [
+                        Image(
+                          image: NetworkImage(imgLink),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 200,
                         ),
-                      )
-                    ]),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return BuildPostItem(
-                          context, SocialCubit.get(context).model!);
-                    },
-                    itemCount: 5,
-                  )
-                ],
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Communicate With Friends',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                        )
+                      ]),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return BuildPostItem(
+                            context,
+                            SocialCubit.get(context).model!,
+                            SocialCubit.get(context).posts[index]);
+                      },
+                      itemCount: SocialCubit.get(context).posts.length,
+                    )
+                  ],
+                ),
               ),
             ),
           );
         });
   }
 
-  Widget BuildPostItem(context, UserModel model) => Card(
+  Widget BuildPostItem(context, UserModel model, PostModel postModel) => Card(
         color: Colors.white,
         margin: EdgeInsets.all(8.0),
         elevation: 10.0,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -84,7 +96,7 @@ class FeedsScrenn extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Abdo Bassel',
+                              '${postModel.name}',
                               style: TextStyle(height: 1.3),
                             ),
                             SizedBox(
@@ -98,7 +110,7 @@ class FeedsScrenn extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '12/12/2023 10:00 pm',
+                          '${postModel.datePost}',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -127,11 +139,14 @@ class FeedsScrenn extends StatelessWidget {
                 width: double.infinity,
               ),
             ),
-            Text(
-              'loperm eeeee mmmsm  m msmms smsmsmss smmsmss smsss smsss smsmsssssssssssssssssssssssssssss ssmsmssmsss smssmmssmsmsmmsss',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Padding(
+            if (postModel.txt != '')
+              Text(
+                '${postModel.txt}',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            /*  
+             // tags 
+              Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 10,
               ),
@@ -159,20 +174,22 @@ class FeedsScrenn extends StatelessWidget {
                   ),
                 ]),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: double.infinity,
-              height: 140,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  image: DecorationImage(
-                    image: NetworkImage(img3),
-                    fit: BoxFit.cover,
-                  )),
-            ),
+            ),*/
+
+            if (postModel.postImage != '')
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Container(
+                  width: double.infinity,
+                  height: 140,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      image: DecorationImage(
+                        image: NetworkImage('${postModel.postImage}'),
+                        fit: BoxFit.cover,
+                      )),
+                ),
+              ),
             Row(
               children: [
                 Expanded(
@@ -192,7 +209,7 @@ class FeedsScrenn extends StatelessWidget {
                             width: 6.0,
                           ),
                           Text(
-                            '120',
+                            '0',
                             style: Theme.of(context).textTheme.bodySmall,
                           )
                         ],
@@ -218,7 +235,7 @@ class FeedsScrenn extends StatelessWidget {
                             width: 6.0,
                           ),
                           Text(
-                            '120',
+                            '0',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
