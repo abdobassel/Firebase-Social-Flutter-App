@@ -71,3 +71,23 @@ class SocialGetPostsErrorState extends SocialStates {
 class SocialCommentPostSuccessState extends SocialStates {}
 
 class SocialCommentPostErrorState extends SocialStates {}
+// get comments
+
+class SocialGetCommentsSuccesState extends SocialStates {}
+
+class SocialGetCommentsLoadingState extends SocialStates {}
+
+class SocialGetCommentsErrorState extends SocialStates {
+  final String error;
+  SocialGetCommentsErrorState(this.error);
+}
+
+//Get Users
+class SocialGetAllUserSuccesState extends SocialStates {}
+
+class SocialGetAllUserLoadingState extends SocialStates {}
+
+class SocialGetAllUserErrorState extends SocialStates {
+  final String error;
+  SocialGetAllUserErrorState(this.error);
+}

@@ -37,6 +37,9 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> titles = ['Feeds ', 'chats', 'Add Post', 'users', 'Settings'];
 
   void changeBottomNav(int index) {
+    if (index == 1) {
+      getAllUsers();
+    }
     if (index == 2) {
       emit(SocialNewPostState());
     } else {
@@ -278,12 +281,14 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> postId = [];
   List<int> likes = [];
   List<int> commentsNum = [];
+  String postid = '';
 
   void getPosts() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
       value.docs.forEach((element) {
         // post id => likes
         String postid = element.id;
+
         commentsCount(postid);
         element.reference.collection('likes').get().then((value) {
           likes.add(value.docs.length);
@@ -361,22 +366,47 @@ class SocialCubit extends Cubit<SocialStates> {
         .doc(uId)
         .set(commentModel.toMap())
         .then((value) {
+      commentsModels.add(commentModel);
       emit(SocialCommentPostSuccessState());
+      print(commentsModels.length);
     }).catchError((error) {
       emit(SocialCommentPostErrorState());
     });
   }
 
-//////////////////////////////////////////////////////////////////////////////////
-
-  // test django Api
-  void getdatatest() async {
-    var response = await http.get(Uri.parse('http://10.0.2.2:8000/core/a'));
-
-    //var pdfText = await json.decode(json.encode(response.body));
-    var pdfText = await jsonDecode(response.body);
-    // print(pdfText);
+  List<String> commentList = [];
+  void getCommets(String postId) {
+    emit(SocialGetCommentsLoadingState());
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        commentList.add(element.id);
+        commentsModels.add(CommentModel.fromJson(element.data()));
+        print(commentsModels.length);
+        emit(SocialGetCommentsSuccesState());
+      });
+    }).catchError((error) {
+      emit(SocialGetCommentsErrorState(error));
+    });
   }
 
-  //end test django
+// users And Chats
+  List<UserModel> users = [];
+  void getAllUsers() {
+    emit(SocialGetAllUserLoadingState());
+    if (users.length == 0)
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((element) {
+          if (element.data()['uId'] != model!.uId)
+            users.add(UserModel.fromJson(element.data()));
+        });
+        emit(SocialGetAllUserSuccesState());
+      }).catchError((error) {
+        emit(SocialGetAllUserErrorState(error.toString()));
+      });
+  }
 }

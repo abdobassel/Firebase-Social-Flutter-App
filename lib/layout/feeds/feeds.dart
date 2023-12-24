@@ -5,6 +5,7 @@ import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/models/createuser.dart';
 import 'package:social_firebase_course/models/post_model.dart';
+import 'package:social_firebase_course/modules/comments/commentsScreen.dart';
 
 class FeedsScrenn extends StatelessWidget {
   FeedsScrenn({super.key});
@@ -221,7 +222,14 @@ class FeedsScrenn extends StatelessWidget {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      SocialCubit.get(context)
+                          .getCommets(SocialCubit.get(context).postId[index]);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CommentsScreen();
+                      }));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
