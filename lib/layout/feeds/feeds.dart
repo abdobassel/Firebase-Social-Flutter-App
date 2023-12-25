@@ -85,7 +85,7 @@ class FeedsScrenn extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage('${model.image}'),
+                  backgroundImage: NetworkImage('${postModel.image}'),
                 ),
                 SizedBox(
                   width: 15,

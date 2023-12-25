@@ -11,6 +11,7 @@ class ChatDetailsScreen extends StatelessWidget {
   final UserModel userModel;
   ChatDetailsScreen({super.key, required this.userModel});
   var messageController = TextEditingController();
+  final _controler = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (BuildContext context) {
@@ -45,6 +46,7 @@ class ChatDetailsScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ListView.builder(
+                                  controller: _controler,
                                   itemBuilder: (context, index) {
                                     var witchMessage = SocialCubit.get(context)
                                         .messages[index];
@@ -88,6 +90,10 @@ class ChatDetailsScreen extends StatelessWidget {
                                             reciverId: userModel.uId!,
                                             text: messageController.text);
                                         messageController.clear();
+                                        _controler.animateTo(
+                                            _controler.position.maxScrollExtent,
+                                            duration: Duration(seconds: 1),
+                                            curve: Curves.fastOutSlowIn);
                                       },
                                       child: Icon(
                                         Icons.send,
