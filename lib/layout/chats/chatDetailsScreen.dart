@@ -39,7 +39,7 @@ class ChatDetailsScreen extends StatelessWidget {
                 body: Conditional.single(
                     context: context,
                     conditionBuilder: (context) =>
-                        SocialCubit.get(context).messages.length > 0,
+                        SocialCubit.get(context).isLoadingGetMesgs == false,
                     widgetBuilder: (context) => Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Column(
@@ -98,6 +98,16 @@ class ChatDetailsScreen extends StatelessWidget {
                                       child: Icon(
                                         Icons.send,
                                         color: Colors.blue,
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      minWidth: 1.0,
+                                      onPressed: () {
+                                        var now = DateTime.now().toString();
+                                      },
+                                      child: FaIcon(
+                                        FontAwesomeIcons.camera,
+                                        color: Colors.black,
                                       ),
                                     )
                                   ],

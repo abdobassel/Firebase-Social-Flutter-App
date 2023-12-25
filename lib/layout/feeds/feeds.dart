@@ -224,10 +224,12 @@ class FeedsScrenn extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       SocialCubit.get(context)
-                          .getCommets(SocialCubit.get(context).postId[index]);
+                          .getComments(SocialCubit.get(context).postId[index]);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return CommentsScreen();
+                        return CommentsScreen(
+                          postModel: postModel,
+                        );
                       }));
                     },
                     child: Padding(

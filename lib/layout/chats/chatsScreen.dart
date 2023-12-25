@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/layout/chats/chatDetailsScreen.dart';
@@ -49,6 +50,23 @@ Widget BuildChatUser(UserModel model, context) => Padding(
             Text(
               '${model.name}',
               style: TextStyle(height: 1.3),
+            ),
+            Spacer(),
+            FaIcon(
+              FontAwesomeIcons.solidCircle,
+              color: Colors.green,
+              size: 16,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            FaIcon(
+              FontAwesomeIcons.phone,
+              size: 16,
+              color: Colors.grey[250],
+            ),
+            SizedBox(
+              width: 10,
             ),
           ],
         ),

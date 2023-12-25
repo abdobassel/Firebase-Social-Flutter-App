@@ -109,3 +109,12 @@ class SocialSendMessageErrorState extends SocialStates {
   final String error;
   SocialSendMessageErrorState(this.error);
 }
+
+//msg img
+class SociaMessagePickedSuccessState extends SocialStates {}
+
+class SociaMessagePickedErrorState extends SocialStates {}
+
+class SocialUploadMessageImgErorrState extends SocialStates {}
+
+class SocialUploadMessageImgSuccessState extends SocialStates {}

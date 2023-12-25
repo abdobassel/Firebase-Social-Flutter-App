@@ -38,7 +38,7 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> titles = ['Feeds ', 'chats', 'Add Post', 'users', 'Settings'];
 
   void changeBottomNav(int index) {
-    if (index == 1) {
+    if (index == 1 || index == 3) {
       getAllUsers();
     }
     if (index == 2) {
@@ -358,6 +358,7 @@ class SocialCubit extends Cubit<SocialStates> {
       comment: textComment,
       uId: model!.uId,
       image: model!.image,
+      postId: postid,
     );
 
     FirebaseFirestore.instance
@@ -376,20 +377,24 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   List<String> commentList = [];
-  void getCommets(String postId) {
+
+  void getComments(String postId) {
     emit(SocialGetCommentsLoadingState());
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('comments')
+        .orderBy('commentDate')
         .get()
         .then((value) {
+      commentsModels = [];
+
       value.docs.forEach((element) {
         commentList.add(element.id);
         commentsModels.add(CommentModel.fromJson(element.data()));
-        print(commentsModels.length);
-        emit(SocialGetCommentsSuccesState());
       });
+      print(commentsModels.length);
+      emit(SocialGetCommentsSuccesState());
     }).catchError((error) {
       emit(SocialGetCommentsErrorState(error));
     });
@@ -450,7 +455,9 @@ class SocialCubit extends Cubit<SocialStates> {
 
   //get Messages chats
   List<MessageModel> messages = [];
+  bool isLoadingGetMesgs = false;
   void getMessages({required String receiverId}) {
+    isLoadingGetMesgs = true;
     FirebaseFirestore.instance
         .collection('users')
         .doc(model!.uId)
@@ -464,7 +471,24 @@ class SocialCubit extends Cubit<SocialStates> {
       event.docs.forEach((element) {
         messages.add(MessageModel.fromJson(element.data()));
       });
+      isLoadingGetMesgs = false;
+
       emit(SocialGetMessageSuccesState());
     });
+  }
+
+  // mssg img
+  File? messageImg;
+  Future<void> getMessageImage() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      messageImg = File(pickedFile.path);
+      emit(SociaMessagePickedSuccessState());
+    } else {
+      print('no img message selected');
+      emit(SociaMessagePickedErrorState());
+    }
   }
 }
