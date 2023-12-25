@@ -15,6 +15,7 @@ import 'package:social_firebase_course/layout/users/usersScreen.dart';
 import 'package:social_firebase_course/models/coment_model.dart';
 import 'package:social_firebase_course/models/createuser.dart';
 import "package:http/http.dart" as http;
+import 'package:social_firebase_course/models/message_model.dart';
 import 'package:social_firebase_course/models/post_model.dart';
 import 'package:social_firebase_course/modules/newpost/new_postScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -408,5 +409,42 @@ class SocialCubit extends Cubit<SocialStates> {
       }).catchError((error) {
         emit(SocialGetAllUserErrorState(error.toString()));
       });
+  }
+
+// messages
+  void SendMessages(
+      {required String dateTime,
+      required String reciverId,
+      required String text}) {
+    MessageModel messageModel = MessageModel(
+        ReceiverId: reciverId,
+        txt: text,
+        dateTime: dateTime,
+        senderId: model!.uId);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(model!.uId)
+        .collection('chats')
+        .doc(reciverId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SocialSendMessageSuccesState());
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState(error.toString()));
+    });
+    // another user same chats
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(reciverId)
+        .collection('chats')
+        .doc(model!.uId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SocialSendMessageSuccesState());
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState(error.toString()));
+    });
   }
 }

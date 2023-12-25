@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
+import 'package:social_firebase_course/layout/chats/chatDetailsScreen.dart';
 import 'package:social_firebase_course/models/createuser.dart';
 
 class Chats_Screnn extends StatelessWidget {
@@ -21,7 +22,7 @@ class Chats_Screnn extends StatelessWidget {
                 Center(child: CircularProgressIndicator()),
             widgetBuilder: (context) => ListView.builder(
               itemBuilder: (context, index) =>
-                  BuildChatUser(SocialCubit.get(context).users[index]),
+                  BuildChatUser(SocialCubit.get(context).users[index], context),
               itemCount: SocialCubit.get(context).users.length,
               physics: BouncingScrollPhysics(),
             ),
@@ -30,10 +31,14 @@ class Chats_Screnn extends StatelessWidget {
   }
 }
 
-Widget BuildChatUser(UserModel model) => Padding(
+Widget BuildChatUser(UserModel model, context) => Padding(
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ChatDetailsScreen(userModel: model);
+          }));
+        },
         child: Row(
           children: [
             CircleAvatar(
