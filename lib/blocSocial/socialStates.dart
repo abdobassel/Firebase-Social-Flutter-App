@@ -118,3 +118,5 @@ class SociaMessagePickedErrorState extends SocialStates {}
 class SocialUploadMessageImgErorrState extends SocialStates {}
 
 class SocialUploadMessageImgSuccessState extends SocialStates {}
+
+class SocialMessageImageCloseState extends SocialStates {}

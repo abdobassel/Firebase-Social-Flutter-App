@@ -62,6 +62,37 @@ class ChatDetailsScreen extends StatelessWidget {
                                       SocialCubit.get(context).messages.length,
                                 ),
                               ),
+                              if (SocialCubit.get(context).messageImg != null)
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      height: 130,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                              SocialCubit.get(context)
+                                                  .messageImg!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    CircleAvatar(
+                                        backgroundColor: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        child: IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            SocialCubit.get(context)
+                                                .closeImgMessage();
+                                          },
+                                        )),
+                                  ],
+                                ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Container(
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 decoration: BoxDecoration(
@@ -85,15 +116,38 @@ class ChatDetailsScreen extends StatelessWidget {
                                       minWidth: 1.0,
                                       onPressed: () {
                                         var now = DateTime.now().toString();
-                                        SocialCubit.get(context).SendMessages(
+                                        if (SocialCubit.get(context)
+                                                .messageImg ==
+                                            null) {
+                                          SocialCubit.get(context).SendMessages(
                                             dateTime: now,
                                             reciverId: userModel.uId!,
-                                            text: messageController.text);
-                                        messageController.clear();
-                                        _controler.animateTo(
-                                            _controler.position.maxScrollExtent,
-                                            duration: Duration(seconds: 1),
-                                            curve: Curves.fastOutSlowIn);
+                                            text: messageController.text,
+                                          );
+                                          messageController.clear();
+                                          _controler.animateTo(
+                                              _controler
+                                                  .position.maxScrollExtent,
+                                              duration: Duration(seconds: 1),
+                                              curve: Curves.fastOutSlowIn);
+                                        } else {
+                                          SocialCubit.get(context)
+                                              .UploadImageMessage(
+                                            dateTime: now,
+                                            recieverId: userModel.uId!,
+                                            text: messageController.text,
+                                          );
+
+                                          SocialCubit.get(context)
+                                              .closeImgMessage();
+                                          messageController.clear();
+                                          messageController.clear();
+                                          _controler.animateTo(
+                                              _controler
+                                                  .position.maxScrollExtent,
+                                              duration: Duration(seconds: 1),
+                                              curve: Curves.fastOutSlowIn);
+                                        }
                                       },
                                       child: Icon(
                                         Icons.send,
@@ -104,6 +158,8 @@ class ChatDetailsScreen extends StatelessWidget {
                                       minWidth: 1.0,
                                       onPressed: () {
                                         var now = DateTime.now().toString();
+                                        SocialCubit.get(context)
+                                            .getMessageImage();
                                       },
                                       child: FaIcon(
                                         FontAwesomeIcons.camera,

@@ -420,11 +420,13 @@ class SocialCubit extends Cubit<SocialStates> {
   void SendMessages(
       {required String dateTime,
       required String reciverId,
-      required String text}) {
+      required String text,
+      String? imageMessage}) {
     MessageModel messageModel = MessageModel(
         ReceiverId: reciverId,
         txt: text,
         dateTime: dateTime,
+        imageMessage: imageMessage ?? '',
         senderId: model!.uId);
     FirebaseFirestore.instance
         .collection('users')
@@ -490,5 +492,38 @@ class SocialCubit extends Cubit<SocialStates> {
       print('no img message selected');
       emit(SociaMessagePickedErrorState());
     }
+  }
+
+  void UploadImageMessage({
+    String? text,
+    required String? recieverId,
+    required String dateTime,
+  }) {
+    emit(SocialUpdateUserLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child(
+            'users/chats/messages/${Uri.file(messageImg!.path).pathSegments.last}')
+        .putFile(messageImg!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        SendMessages(
+            dateTime: dateTime,
+            reciverId: recieverId!,
+            text: text ?? '',
+            imageMessage: value);
+      }).catchError((erorr) {
+        print(erorr.toString());
+        emit(SocialUploadMessageImgErorrState());
+      });
+    }).catchError((erorr) {
+      print(erorr.toString());
+      emit(SocialUploadCoverErrorState());
+    });
+  }
+
+  void closeImgMessage() {
+    messageImg = null;
+    emit(SocialMessageImageCloseState());
   }
 }
