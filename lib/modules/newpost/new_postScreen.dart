@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_firebase_course/blocSocial/socialCubit.dart';
 import 'package:social_firebase_course/blocSocial/socialStates.dart';
 import 'package:social_firebase_course/components.dart';
+import 'package:social_firebase_course/layout/feeds/feeds.dart';
 
 class NewPostScreen extends StatelessWidget {
   NewPostScreen({super.key});
@@ -26,11 +27,21 @@ class NewPostScreen extends StatelessWidget {
                         SocialCubit.get(context).createPost(
                             dateTime: now.toString(), txt: txtController.text);
                         txtController.clear();
+                        Navigator.pop(context);
+                        SocialCubit.get(context).getPosts();
+
+                        ShowToast(
+                            text: 'تم النشر بنجاح', state: ToastStates.SUCCESS);
                       } else {
                         SocialCubit.get(context).createPostImage(
                             dateTime: now.toString(), txt: txtController.text);
                         SocialCubit.get(context).closeImgPost();
                         txtController.clear();
+                        Navigator.pop(context);
+                        SocialCubit.get(context).getPosts();
+
+                        ShowToast(
+                            text: 'تم النشر بنجاح', state: ToastStates.SUCCESS);
                       }
                     },
                     child: Text(
@@ -55,15 +66,15 @@ class NewPostScreen extends StatelessWidget {
               Row(children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(
-                      'https://www.shorturl.at/img/shorturl-icon.png'),
+                  backgroundImage:
+                      NetworkImage('${SocialCubit.get(context).model!.image}'),
                 ),
                 SizedBox(
                   width: 15,
                 ),
                 Expanded(
                   child: Text(
-                    'Abdo Bassel',
+                    '${SocialCubit.get(context).model!.name}',
                     style: TextStyle(height: 1.3),
                   ),
                 ),

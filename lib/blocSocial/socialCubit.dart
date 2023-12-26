@@ -285,7 +285,11 @@ class SocialCubit extends Cubit<SocialStates> {
   String postid = '';
 
   void getPosts() {
-    FirebaseFirestore.instance.collection('posts').get().then((value) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('datePost')
+        .get()
+        .then((value) {
       value.docs.forEach((element) {
         // post id => likes
         String postid = element.id;
@@ -314,8 +318,8 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  Future<void> commentsCount(String postId) async {
-    await FirebaseFirestore.instance
+  void commentsCount(String postId) {
+    FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('comments')
@@ -382,7 +386,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialGetCommentsLoadingState());
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(postId)
+        .doc(postid)
         .collection('comments')
         .orderBy('commentDate')
         .get()
